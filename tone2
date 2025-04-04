@@ -1,0 +1,37 @@
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m HEAD@{0}: checkout: moving from temp_github_master to master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m refs/heads/temp_github_master@{0}: branch: Created from origin/master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m HEAD@{1}: checkout: moving from master to temp_github_master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m HEAD@{2}: checkout: moving from master to master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m refs/heads/old_master_backup@{0}: branch: Created from master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m refs/heads/master@{0}: reset: moving to origin/master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m HEAD@{3}: reset: moving to origin/master
+[33mb9e650d[m HEAD@{4}: checkout: moving from master to master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m refs/remotes/origin/master@{0}: fetch origin: forced-update
+[33mb9e650d[m refs/heads/master@{1}: reset: moving to b9e650d
+[33mb9e650d[m HEAD@{5}: reset: moving to b9e650d
+[33m49119a8[m HEAD@{6}: checkout: moving from master to master
+[33m49119a8[m HEAD@{7}: checkout: moving from main to master
+[33mdbd8489[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mtemp_github_master[m[33m, [m[1;32mold_master_backup[m[33m)[m HEAD@{8}: commit: Final Milestone
+[33m83b30c0[m HEAD@{9}: commit: Remove unnecessary directories
+[33md7a1349[m HEAD@{10}: Branch: renamed refs/heads/temp-main to refs/heads/main
+[33md7a1349[m HEAD@{12}: commit (initial): Progress_March: Todo List App
+[33m49119a8[m HEAD@{13}: checkout: moving from master to main
+[33m49119a8[m refs/heads/master@{2}: commit: Progress_March: Todo List App
+[33m49119a8[m HEAD@{14}: commit: Progress_March: Todo List App
+[33mb9e650d[m refs/remotes/origin/master@{1}: update by push
+[33mb9e650d[m refs/heads/master@{3}: commit: Milestone2
+[33mb9e650d[m HEAD@{15}: commit: Milestone2
+[33mdb21ce2[m refs/remotes/origin/master@{2}: update by push
+[33mdb21ce2[m refs/heads/master@{4}: commit: Milestone2
+[33mdb21ce2[m HEAD@{16}: commit: Milestone2
+[33mf7c7826[m refs/remotes/origin/master@{3}: update by push
+[33mf7c7826[m refs/heads/master@{5}: commit: Milestone2
+[33mf7c7826[m HEAD@{17}: commit: Milestone2
+[33md1d9466[m refs/remotes/origin/master@{4}: update by push
+[33md1d9466[m refs/heads/master@{6}: commit (merge): Milestone2
+[33md1d9466[m HEAD@{18}: commit (merge): Milestone2
+[33m18baf44[m refs/remotes/origin/master@{5}: pull origin master: storing head
+[33me42b02f[m refs/heads/master@{7}: commit: Initial commit: Todo List App
+[33me42b02f[m HEAD@{19}: commit: Initial commit: Todo List App
+[33mfa6a559[m refs/heads/master@{8}: commit (initial): Initial commit
+[33mfa6a559[m HEAD@{20}: commit (initial): Initial commit

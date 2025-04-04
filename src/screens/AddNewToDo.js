@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { useState } from 'react';
 import Title from '../components/Title';
 import PageLayout from '../constants/PageLayout';
@@ -6,25 +6,67 @@ import Inputs_AddNewToDo from '../components/Inputs_AddNewToDo';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AddToDoButton from '../components/AddToDoButton';
 import ButtonStyle from '../constants/ButtonStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AddNewToDo({ navigation }){
+export default function AddNewToDo({ navigation, route }){
 
-// useState is an array with elements [currentvalue, default updateFunction]
-// to use the elements in useState, deconstruction is used 
-// to get current value and updatefunction then set as variables.
-    // useState("", default reactnative update function) sets currentvalue as empty string
+// useState is an array with elements [currentvalue, default function to replace current value]
+// use deconstruction to set currentvalue and update function as variables.
+// sets currentvalue as empty string
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-// Pass new task title and description to Home screen to save the task.
-    const saveTask= () => {
-        if(title.trim()!==""){
-            navigation.navigate("Home",{
-                newTask:{
-                    title:title,
-                    description:description
-                }
-            });
+// get storageKey, defaultTodo, setTodo from route parameters
+    const { storageKey, defaultTodo, setTodo } = route.params;
+
+// add todo function that accepts title and description from saveTodo
+    const addTodo = async (title, description) => {
+        try {
+            let existingTodoObject = defaultTodo;
+    // get existing todo
+            const existingTodostring = await AsyncStorage.getItem(storageKey);
+    // if there is existing todo, convert them to object.
+            if (existingTodostring !== null) {
+                existingTodoObject = JSON.parse(existingTodostring);
+            } 
+            const newTodo = {
+                id: Math.random().toString(),
+                title: title,
+                description: description
+            };
+    // combine existing and new todo.
+            const updatedTodo = [...existingTodoObject, newTodo];
+            
+    // replace current todo with updated to do and save to storage.
+            setTodo(updatedTodo);
+            
+            const updatedTodoString = JSON.stringify(updatedTodo);
+
+            await AsyncStorage.setItem(storageKey, updatedTodoString);
+    // return success indicator
+            return true;
+
+        } catch (error) {
+            console.log('Error saving Todo List:', error);
+    // return failure indicator
+            return false;
+        }
+    };
+
+    const saveTodo= async() => {
+        if(title.trim()!==""&&description.trim()!==""){
+            const success = await addTodo(title, description);
+            if (success){
+// clear input fields
+                setTitle("");
+                setDescription("");
+
+// will only show success message after it has successfully saved.
+                Alert.alert(`Todo Added Successfully.`, "", [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ])
+            }
+
         }
     };
 
@@ -53,16 +95,16 @@ export default function AddNewToDo({ navigation }){
             <View style={styles.container}>
                 <View style={ButtonStyle.addtodo_page_container}>
                     <AddToDoButton 
-                        label="Cancel" 
-        // navigate to Home.
+                        label="Back" 
+// navigate to Home.
                         func= {() =>navigation.goBack()}
                         icon={backIcon}
                         style={{width:"30%"}}
                     ></AddToDoButton>
                     <AddToDoButton 
                         label="Save" 
-        // use addTaskFunction.
-                        func= {saveTask}
+// use saveTodo to pass newToDo object to home.
+                        func= {saveTodo}
                         icon={saveIcon}
                         style={{width:"22%"}}
                     ></AddToDoButton>

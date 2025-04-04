@@ -4,7 +4,7 @@ import Line from "../constants/Line";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Destructure navigation prop passed from <Stack.Screen> to navigate to AddNewToDo screen.
-export default function HomeFooter({navigation}){
+export default function HomeFooter({navigation, storageKey, defaultTodo, setTodo}){
 // Make a plus icon for Add New Todo button.
     const plusIcon = <Ionicons name="add-circle"
     size={25}
@@ -19,7 +19,11 @@ export default function HomeFooter({navigation}){
                 label="Add New Todo" 
 // navigate to Add New Todo which matches Stack.Screen name in App.js
 // From Home to HomeFooter then pass to AddNewToDo screen.
-                func= {() =>navigation.navigate("Add New Todo")}
+                func= {() =>navigation.navigate("Add New Todo", {
+                    storageKey: storageKey,
+                    defaultTodo: defaultTodo,
+                    setTodo: setTodo
+                })}
                 icon={plusIcon}
             ></AddToDoButton>
         </View>

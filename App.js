@@ -23,7 +23,6 @@ Because name is the identifier used for navigation,
 Stack.Screen name must match with whichever page that is using navigation.navigate.
 component refers to files in screens.
 */}
-
         <Stack.Screen name="Home" component={Home}/>
         <Stack.Screen name="Add New Todo" 
           component={AddNewToDo}

@@ -1,6 +1,5 @@
 import {View, StyleSheet, Text, TextInput} from "react-native";
 // To manage count state of our application.
-import { useState } from 'react';
 import InputBox from "../constants/InputBox";
 import Heading1 from "../constants/Heading1";
 
@@ -14,8 +13,10 @@ export default function Inputs_AddNewToDo({title, setTitle, description, setDesc
                 <TextInput style={InputBox.title_box}
                     placeholder="Please input title"
                     value={title}
-// when user types something, onChangeText runs and setTitle("something") is called.
-// title is updated by setTitle which updates value above.
+// when user types something, onChangeText runs and setTitle replaces current title to display user input.
+// when setTitle replaces the title in AddNewToDo
+// React shows new title instantly and the updated title comes
+// back to Inputs_AddNewToDo as a prop and get deconstructed.
                     onChangeText={setTitle}
                 ></TextInput>
                 <Text style={Heading1.text}>Description</Text>

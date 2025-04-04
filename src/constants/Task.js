@@ -10,7 +10,7 @@ export default {
         width:300,
         backgroundColor: "#D1F6FF",
         justifyContent:"center",
-        alignItems:"center",
+        // alignItems:"center",
         borderRadius:5,   
         marginBottom:15,
         elevation:3,    
@@ -21,6 +21,7 @@ export default {
         fontWeight:"700",
         color:"black",
         fontFamily: "serif",
+        paddingLeft:10,
     },
     title:{
         fontSize:16,

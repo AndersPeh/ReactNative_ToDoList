@@ -1,4 +1,4 @@
-import { StyleSheet, Button, View} from 'react-native';
+import { Alert, View} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ListofItems from '../components/ListofItems';
@@ -7,87 +7,127 @@ import HomeFooter from '../components/HomeFooter';
 import PageLayout from '../constants/PageLayout';
 
 export default function Home({ navigation, route }){
-    // deconstruct useState with tasks and update function setTasks. Set tasks initial value as []
-    const [tasks, setTasks] = useState([]);
 
-// load tasks when the app is started.
+// set a key as unique identifier for interacting with data
+    const key = "ToDoListApp";
+    const expandedStateKey = "ToDoListAppExpandedState";
+    const completedStateKey = "ToDoListAppCompletedState";
+
+// deconstruct useState with tasks and update function setTasks. Set tasks initial value as []
+    const [Todo, setTodo] = useState([]);
+
+// set default expandedTodo as empty object so everything is collapsed in the beginning (undefined)
+    const [expandedTodo, setexpandedTodo] = useState({});
+
+// set default completedTodo as empty object so everything is incomplete in the beginning (undefined)
+    const [completedTodo, setcompletedTodo] = useState({});
+
+// default todo list
+    const defaultTodo = [
+        {id: "1", title: "Buy milk", description: "Coles brand"},
+        {id: "2", title: "Buy fruit", description: "Discount fruit barn"},
+        {id: "3", title: "Buy chicken", description: "Costco"}
+    ];
+
+// load Todo when the app is started using [].
     useEffect(() => {
-// define async function to run Javascript as if it is like synchronous.
-        const loadTasks = async () => {
+// define async function to use await.
+        const loadTodo = async () => {
             try {
-// wait for storage read, means it is set aside to run and proceed with other stuff in Callstack.
-                const savedTasksString = await AsyncStorage.getItem('tasks');
-                if (savedTasksString !== null) {
-// if savedTasksString exists, update state with saved data.
-                    setTasks(JSON.parse(savedTasksString));
+// pauses execution until data is retrieved.
+                const savedTodostring = await AsyncStorage.getItem(key);
+                if (savedTodostring !== null) {
+// if savedTasksString exists, convert to object
+                    const savedTodoobject = JSON.parse(savedTodostring);
+// replace current empty Todo with existing Todo.
+                    setTodo(savedTodoobject);
                 } else {
-// if there is nothing saved, use my default to do list.
-                    const defaultTasks = [
-                        {id: "1", title: "Buy milk", description: "Coles brand"},
-                        {id: "2", title: "Buy fruit", description: "Discount fruit barn"},
-                        {id: "3", title: "Buy chicken", description: "Costco"}
-                    ];
-// set my default to do list in state and save.
-                    setTasks(defaultTasks);
-                    await AsyncStorage.setItem('tasks', JSON.stringify(defaultTasks));
+// replace empty todo list with my default to do list if no existing Todo.
+                    setTodo(defaultTodo);
+// pauses execution until data has been stored.
+                    // await AsyncStorage.setItem('tasks', JSON.stringify(defaultTodo));
                 }
+// Load expanded state
+                const savedExpandedString = await AsyncStorage.getItem(expandedStateKey);
+                if (savedExpandedString !== null) {
+                    setexpandedTodo(JSON.parse(savedExpandedString));
+                }
+            
+// Load completed state
+                const savedCompletedString = await AsyncStorage.getItem(completedStateKey);
+                if (savedCompletedString !== null) {
+                    setcompletedTodo(JSON.parse(savedCompletedString));
+                }
+// catch error just in case
             } catch (error) {
                 console.log('Error loading Todo List:', error);
             }
         };
-        loadTasks();
-// [] empty dependency array means when Home screen first loads, it triggers this userEffect to load tasks.
+// call loadTodo to use now
+        loadTodo();
+// [] empty dependency array means when Home screen first loads, it triggers this userEffect to load one time only.
     }, []);
 
-    // add task function
-    const addTask = async (title, description) => {
-        try {
-// get existing tasks
-            const savedTasksString = await AsyncStorage.getItem('tasks');
-            let currentTasks = [];
-// if there is existing todo tasks, put them in currentTasks.
-            if (savedTasksString !== null) {
-                currentTasks = JSON.parse(savedTasksString);
-            }
-            
-            const newTask = {
-                id: Math.random().toString(),
-                title: title,
-                description: description
-            };
-// combine existing and new tasks.
-            const updatedTasks = [...currentTasks, newTask];
-            
-// Update state and save to storage.
-            setTasks(updatedTasks);
-            
-            await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            console.log("Todo List added successfully.");
-        } catch (error) {
-            console.log('Error saving Todo List:', error);
+
+// delete Todo
+    const deleteTodo = async(todoId) =>{
+        try{
+            const unwantedItem =  Todo.find(item => item.id === todoId);
+// filter out the todo with the id selected by user.
+            const remainingTodo = Todo.filter(item => item.id !== todoId);
+// replace Todo with remainingTodo to hide unwanted item
+            setTodo(remainingTodo);
+// delete the deleted todo to update expanded state
+            setexpandedTodo(currentState => {
+                const newState = {...currentState};
+                delete newState[todoId];
+                const newStatestring = JSON.stringify(newState);
+                AsyncStorage.setItem(expandedStateKey, newStatestring)
+                    .catch(error => console.log('Error saving expanded state:', error));
+                return newState;
+            });
+
+// delete the deleted todo to update completed state. 
+            setcompletedTodo(currentState => {
+                const newState = {...currentState};
+                delete newState[todoId];
+                const newStatestring = JSON.stringify(newState);
+                AsyncStorage.setItem(completedStateKey, newStatestring)
+                    .catch(error => console.log('Error saving completed state:', error));
+                return newState;
+            });
+
+
+// save updated Todo 
+            const remainingTodoString = JSON.stringify(remainingTodo);
+            await AsyncStorage.setItem(key, remainingTodoString);
+            Alert.alert(`${unwantedItem.title} Deleted Successfully.`, "", [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ])
+        } catch (e) {
+            console.log('Error deleting Todo item:', error);
         }
-    };
-
-// useEffect as listener.
-    useEffect(() => {
-
-// if navigation from AddToDo screen has a new task
-
-        if (route.params?.newTask) {
-// add new task data and clear navigation parameters for React to recognise future new tasks.
-            addTask(route.params.newTask.title, route.params.newTask.description);
-            navigation.setParams({ newTask: null });
-        }
-// this dependency means useEffect is trigerred when route parameters (navigation) changes and include
-// a newTask from AddNewToDo screen.
-    }, [route.params?.newTask]);
-
+    }
 
     return (
         <View style={PageLayout}>
             <Title title={"My Todo List"}></Title>
-            <ListofItems tasks={tasks}></ListofItems>
-            <HomeFooter navigation={navigation}></HomeFooter>           
+            <ListofItems 
+                Todo={Todo} 
+                deleteTodo={deleteTodo}
+                expandedStateKey={expandedStateKey}
+                completedStateKey={completedStateKey}
+                expandedTodo={expandedTodo}              
+                setexpandedTodo={setexpandedTodo}     
+                completedTodo={completedTodo}          
+                setcompletedTodo={setcompletedTodo}
+            ></ListofItems>
+            <HomeFooter 
+                navigation={navigation} 
+                setTodo={setTodo}
+                storageKey={key}
+                defaultTodo={defaultTodo}
+            ></HomeFooter>           
         </View>
     );
 }
